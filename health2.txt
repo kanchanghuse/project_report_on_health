@@ -1,0 +1,144 @@
+Healthcare Recommandation System
+=========================================
+
+mysql> create database health2;
+Query OK, 1 row affected (1.14 sec)
+
+mysql> use health2;
+Database changed
+
+
+mysql>  create table user(userid varchar(50) primary key,username varchar(50), password varchar(20),type varchar(20),status varchar(20) default 'active',seque varchar(50) default 'null', answer varchar(20) default 'null');
+Query OK, 0 rows affected (2.08 sec)
+
+mysql> create table register(userid varchar(50) primary key,username varchar(50), password varchar(20),type varchar(20) default 'user', seque varchar(50), answer varchar(20), status varchar(20) default 'active');
+Query OK, 0 rows affected (0.91 sec)
+
+
+create table doctor(docid varchar(20),name varchar(20),password varchar(20), degree varchar(40),mobileno varchar(50), seque varchar(20) default 'null', ans varchar(20) default 'null');
+Query OK, 0 rows affected (2.04 sec)
+
+
+
+create table distypmast(typeid int primary key auto_increment,typename varchar(40)) ;
+
+create table disease(disname varchar(40) primary key, typename varchar(40),symptoms varchar(2000), description varchar(2000),docid varchar(40));
+
+
+create table feedback(no int primary key,docid varchar(40), que varchar(90), userid varchar(20), ans varchar(90) default 'null',typename varchar(40));	
+
+ create table pasthis(disname varchar(100),typename varchar(40), symptoms varchar(6000), description varchar(3000),que varchar(1000), ans varchar(1000),userid varchar(20));	
+=================================================================================
+
+create procedure insto(dnm varchar(40),type varchar(30),sys varchar(6000),des varchar(6000),que varchar(300),ans varchar(3000),did varchar(20))
+begin 
+insert into pasthis values(dnm,type,sys,des,que,ans,did);
+end//
+===============
+
+
+
+
+delimiter //
+create procedure reguse(userid varchar(50),username varchar(50), password varchar(20), seque varchar(50), answer varchar(20))
+begin
+insert into register values(userid,username,password,default,seque,answer,default);
+end//
+delimiter ;
+===================================================
+create procedure addtouse(userid varchar(50),username varchar(50), password varchar(20),type varchar(20))
+begin
+insert into user values(userid,username,password,type,default,default,default);
+end//
+==============================================
+create procedure addtouse2(userid varchar(50),username varchar(50), password varchar(20),typ varchar(20),seque varchar(50),ans varchar(50))
+begin
+insert into user values(userid,username,password,typ,default,seque,ans);
+end//
+=============================
+create procedure regdoctor(docid varchar(50),name varchar(100), password varchar(20), degree varchar(100),mobileno varchar(50),eml varchar(40))
+begin
+insert into doctor values(docid,name,password,degree,mobileno,default,default,eml);
+end//
+===========================================
+mysql> delimiter //
+mysql> create procedure getdoc()
+    -> begin
+    -> select * from doctor;
+    -> end //
+Query OK, 0 rows affected (0.17 sec)
+
+============================================
+mysql> delimiter //
+mysql> create procedure recom(did varchar(20))
+begin
+select distinct * from pasthis where userid=did;
+end //
+Query OK, 0 rows affected (0.17 sec)
+
+===============================
+mysql> delimiter //
+mysql> create procedure editpro(did varchar(30))
+    -> begin
+    -> select * from doctor
+    -> where docid=did;
+    -> end//
+Query OK, 0 rows affected (0.09 sec)
+mysql> delimiter ;
+===============================================
+create procedure updoc(name varchar(30),password varchar(40),degree varchar(40), contactno varchar(30),seque varchar(20),ans varchar(20),docid varchar(20))
+begin
+update doctor set name=name,password=password,degree=degree,contactno=contactno,seque=seque,ans=ans where docid=docid;
+end//
+========================================
+
+create procedure upuser(name varchar(30),password varchar(30),docid varchar(30),seque varchar(50),ans varchar(20))
+begin
+update user set username=name,password=password,seque=seque,answer=ans where userid=docid;
+end//
+=====================================
+
+create procedure ser(sr varchar(300))
+begin
+select disease.disname,disease.typename,disease.symptoms,disease.description,feedback.que,feedback.ans from disease inner join feedback on disease.docid=feedback.docid where disname like sr or typename like sr or symptoms like sr or description like sr or que like sr or ans like sr;
+end//
+Query OK, 0 rows affected (0.09 sec)
+==========================================================
+create procedure adddistyp(typename varchar(50))
+begin
+insert into distypmast(typename)values(typename);
+end//
+=================================================
+
+
+  if(typ.equals("doctor"))
+        {
+    	 pst2=con.prepareStatement("update doctor set password=? where docid=? and password=?;");
+        pst2.setString(1, nps);
+        pst2.setString(2, did);
+        pst2.setString(3, curps);
+         int cnt=pst2.executeUpdate();
+         if(cnt>0)
+         {
+        	 sts="success";
+         }
+        }
+        
+        
+        else if(typ.equals("user"))
+        {
+    	 pst3=con.prepareStatement("update register set password=? where userid=? and password=?;");
+        pst3.setString(1, nps);
+        pst3.setString(2, did);
+        pst3.setString(3, curps);
+        int cnt= pst3.executeUpdate();
+        if(cnt>0)
+        {
+       	 sts="success";
+        }
+       }
+
+
+
+insert into user values('kan12','kanchan','ka','admin','active','birthpace?','pune');
+
